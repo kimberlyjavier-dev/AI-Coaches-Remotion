@@ -2,6 +2,7 @@ import "./index.css";
 import { Composition } from "remotion";
 import { MyComposition } from "./Composition";
 import { HelloWorld, myCompSchema } from "./HelloWorld";
+import { Demo, DEMO_DURATION_IN_FRAMES } from "./Demo/Demo";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -28,6 +29,14 @@ export const RemotionRoot: React.FC = () => {
           logoColor1: "#91EAE4",
           logoColor2: "#86A8E7",
         }}
+      />
+      <Composition
+        id="Demo"
+        component={Demo}
+        durationInFrames={DEMO_DURATION_IN_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );
