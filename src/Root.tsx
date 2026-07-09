@@ -1,6 +1,7 @@
 import "./index.css";
 import { Composition } from "remotion";
 import { MyComposition } from "./Composition";
+import { HelloWorld, myCompSchema } from "./HelloWorld";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -12,6 +13,21 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1280}
         height={720}
+      />
+      <Composition
+        id="HelloWorld"
+        component={HelloWorld}
+        durationInFrames={150}
+        fps={30}
+        width={1920}
+        height={1080}
+        schema={myCompSchema}
+        defaultProps={{
+          titleText: "Welcome to Remotion",
+          titleColor: "#000000",
+          logoColor1: "#91EAE4",
+          logoColor2: "#86A8E7",
+        }}
       />
     </>
   );

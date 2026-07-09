@@ -7,9 +7,11 @@
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.486",
+    "@remotion/zod-types": "^4.0.486",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "4.0.486"
+    "remotion": "4.0.486",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.486",
