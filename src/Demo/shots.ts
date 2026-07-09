@@ -4,12 +4,11 @@ export type Shot = {
   id: string;
   phase: string;
   image: string;
-  audio: string;
+  script: string;
   nativeWidth: number;
   nativeHeight: number;
   cursorFrom: CursorPoint;
   cursorTo: CursorPoint;
-  durationInFrames: number;
 };
 
 export const PHASES = [
@@ -22,173 +21,178 @@ export const PHASES = [
   "Manage",
 ];
 
-// Frame counts are audio-driven: measured narration length (espeak-ng
-// placeholder) + a short lead-in/tail so cuts don't clip the voice.
+const FPS = 30;
+
+// `script` is the voiceover line for this shot (see VOICEOVER_SCRIPT.md for
+// the full read-aloud script). Duration is estimated from a natural
+// speaking pace so the cut feels right even before real VO is recorded;
+// swap in real audio later and these numbers can be nudged to match it.
+export const durationForScript = (script: string) => {
+  const words = script.trim().split(/\s+/).length;
+  const frames = Math.round((words / 2.8) * FPS) + 20;
+  return Math.max(70, Math.min(120, frames));
+};
+
 export const SHOTS: Shot[] = [
   {
     id: "landing",
     phase: "Discover",
     image: "shots/shot-01.png",
-    audio: "audio/shot-01.wav",
+    script: "Meet AI Coaches — live, hands-on workshops.",
     nativeWidth: 908,
     nativeHeight: 540,
     cursorFrom: { x: 0.15, y: 0.9 },
     cursorTo: { x: 0.806, y: 0.067 },
-    durationInFrames: 136,
   },
   {
     id: "signup",
     phase: "Sign up",
     image: "shots/shot-02.png",
-    audio: "audio/shot-02.wav",
+    script: "Sign up in seconds, with just an email.",
     nativeWidth: 924,
     nativeHeight: 616,
     cursorFrom: { x: 0.85, y: 0.9 },
     cursorTo: { x: 0.64, y: 0.659 },
-    durationInFrames: 94,
   },
   {
     id: "tour",
     phase: "Onboard",
     image: "shots/shot-03.png",
-    audio: "audio/shot-03.wav",
+    script: "A quick tour shows how booking works.",
     nativeWidth: 1280,
     nativeHeight: 860,
     cursorFrom: { x: 0.15, y: 0.15 },
     cursorTo: { x: 0.818, y: 0.903 },
-    durationInFrames: 88,
   },
   {
     id: "focus",
     phase: "Onboard",
     image: "shots/shot-04.png",
-    audio: "audio/shot-04.wav",
+    script: "Pick your focus areas, and experience level.",
     nativeWidth: 1280,
     nativeHeight: 860,
     cursorFrom: { x: 0.85, y: 0.2 },
-    cursorTo: { x: 0.521, y: 0.209 },
-    durationInFrames: 108,
+    cursorTo: { x: 0.671, y: 0.326 },
   },
   {
     id: "allset",
     phase: "Onboard",
     image: "shots/shot-05.png",
-    audio: "audio/shot-05.wav",
+    script: "All set — the dashboard is ready.",
     nativeWidth: 1280,
     nativeHeight: 860,
     cursorFrom: { x: 0.2, y: 0.85 },
     cursorTo: { x: 0.8, y: 0.903 },
-    durationInFrames: 83,
   },
   {
     id: "dashtour",
     phase: "Learn the dashboard",
     image: "shots/shot-06.png",
-    audio: "audio/shot-06.wav",
+    script: "A spotlight tour shows you around.",
     nativeWidth: 1280,
     nativeHeight: 860,
     cursorFrom: { x: 0.6, y: 0.5 },
     cursorTo: { x: 0.096, y: 0.145 },
-    durationInFrames: 80,
   },
   {
     id: "workshops",
     phase: "Browse & request",
     image: "shots/shot-07.png",
-    audio: "audio/shot-07.wav",
+    script: "Browse the full workshop catalog.",
     nativeWidth: 907,
     nativeHeight: 540,
     cursorFrom: { x: 0.9, y: 0.15 },
     cursorTo: { x: 0.153, y: 0.859 },
-    durationInFrames: 83,
+  },
+  {
+    id: "workshops-grid",
+    phase: "Browse & request",
+    image: "shots/shot-07b.png",
+    script: "Real sessions, real hosts, real dates.",
+    nativeWidth: 1032,
+    nativeHeight: 380,
+    cursorFrom: { x: 0.85, y: 0.85 },
+    cursorTo: { x: 0.186, y: 0.355 },
   },
   {
     id: "events",
     phase: "Browse & request",
     image: "shots/shot-08.png",
-    audio: "audio/shot-08.wav",
+    script: "See every upcoming public session.",
     nativeWidth: 907,
     nativeHeight: 540,
     cursorFrom: { x: 0.15, y: 0.2 },
     cursorTo: { x: 0.892, y: 0.787 },
-    durationInFrames: 86,
   },
   {
     id: "schedule",
     phase: "Browse & request",
     image: "shots/shot-09.png",
-    audio: "audio/shot-09.wav",
+    script: "Need something private? Request a session.",
     nativeWidth: 924,
     nativeHeight: 540,
     cursorFrom: { x: 0.85, y: 0.85 },
     cursorTo: { x: 0.892, y: 0.237 },
-    durationInFrames: 108,
   },
   {
     id: "booking",
     phase: "Book",
     image: "shots/shot-10.png",
-    audio: "audio/shot-10.wav",
+    script: "Pick a session, and check out fast.",
     nativeWidth: 1423,
     nativeHeight: 843,
     cursorFrom: { x: 0.12, y: 0.9 },
     cursorTo: { x: 0.73, y: 0.95 },
-    durationInFrames: 90,
   },
   {
     id: "confirm",
     phase: "Book",
     image: "shots/shot-11.png",
-    audio: "audio/shot-11.wav",
+    script: "Booked! Confirmation lands instantly.",
     nativeWidth: 1423,
     nativeHeight: 843,
     cursorFrom: { x: 0.88, y: 0.12 },
     cursorTo: { x: 0.73, y: 0.654 },
-    durationInFrames: 101,
   },
   {
     id: "invoice",
     phase: "Book",
     image: "shots/shot-12.png",
-    audio: "audio/shot-12.wav",
+    script: "The invoice is ready right away.",
     nativeWidth: 907,
     nativeHeight: 540,
     cursorFrom: { x: 0.15, y: 0.88 },
     cursorTo: { x: 0.858, y: 0.265 },
-    durationInFrames: 74,
   },
   {
     id: "mybookings",
     phase: "Manage",
     image: "shots/shot-13.png",
-    audio: "audio/shot-13.wav",
+    script: "It shows up in My Bookings.",
     nativeWidth: 908,
     nativeHeight: 1064,
     cursorFrom: { x: 0.85, y: 0.9 },
     cursorTo: { x: 0.248, y: 0.289 },
-    durationInFrames: 70,
   },
   {
     id: "bookingdetails",
     phase: "Manage",
     image: "shots/shot-14.png",
-    audio: "audio/shot-14.wav",
+    script: "Every booking has its own page.",
     nativeWidth: 924,
     nativeHeight: 540,
     cursorFrom: { x: 0.1, y: 0.12 },
     cursorTo: { x: 0.852, y: 0.228 },
-    durationInFrames: 80,
   },
   {
     id: "calendar",
     phase: "Manage",
     image: "shots/shot-15.png",
-    audio: "audio/shot-15.wav",
+    script: "The whole schedule, in one calendar.",
     nativeWidth: 924,
     nativeHeight: 540,
     cursorFrom: { x: 0.9, y: 0.88 },
     cursorTo: { x: 0.336, y: 0.744 },
-    durationInFrames: 87,
   },
 ];
 

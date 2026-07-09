@@ -1,7 +1,6 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Audio,
   Img,
   interpolate,
   staticFile,
@@ -13,12 +12,12 @@ import { computeStageRect } from "./shots";
 import { Cursor } from "./Cursor";
 import { colors, fontFamily, heroGradient } from "./theme";
 
-export const ShotScene: React.FC<{ shot: Shot; shotNumber: number }> = ({
+export const ShotScene: React.FC<{ shot: Shot; shotNumber: number; durationInFrames: number }> = ({
   shot,
   shotNumber,
+  durationInFrames,
 }) => {
   const frame = useCurrentFrame();
-  const durationInFrames = shot.durationInFrames;
 
   const entrance = interpolate(frame, [0, 9], [0, 1], {
     extrapolateLeft: "clamp",
@@ -45,7 +44,6 @@ export const ShotScene: React.FC<{ shot: Shot; shotNumber: number }> = ({
 
   return (
     <AbsoluteFill style={{ background: heroGradient, backgroundColor: colors.purple600 }}>
-      <Audio src={staticFile(shot.audio)} />
       <AbsoluteFill style={{ opacity, transform: `scale(${scale})` }}>
         <div
           style={{

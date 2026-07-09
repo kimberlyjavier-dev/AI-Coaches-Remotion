@@ -2,23 +2,24 @@ import React from "react";
 import { AbsoluteFill, Sequence } from "remotion";
 import { IntroCard, OutroCard } from "./BookendCard";
 import { ShotScene } from "./ShotScene";
-import { SHOTS } from "./shots";
+import { SHOTS, durationForScript } from "./shots";
 
-export const INTRO_DURATION = 94;
+export const INTRO_DURATION = 75;
 export const OUTRO_DURATION = 45;
 
+const shotDurations = SHOTS.map((s) => durationForScript(s.script));
+
 export const DEMO_DURATION_IN_FRAMES =
-  INTRO_DURATION +
-  SHOTS.reduce((total, shot) => total + shot.durationInFrames, 0) +
-  OUTRO_DURATION;
+  INTRO_DURATION + shotDurations.reduce((a, b) => a + b, 0) + OUTRO_DURATION;
 
 export const Demo: React.FC = () => {
   let cursor = INTRO_DURATION;
 
   const blocks = SHOTS.map((shot, i) => {
     const from = cursor;
-    cursor += shot.durationInFrames;
-    return { shot, from, shotNumber: i + 1 };
+    const durationInFrames = shotDurations[i];
+    cursor += durationInFrames;
+    return { shot, from, durationInFrames, shotNumber: i + 1 };
   });
 
   const outroFrom = cursor;
@@ -28,9 +29,9 @@ export const Demo: React.FC = () => {
       <Sequence durationInFrames={INTRO_DURATION}>
         <IntroCard durationInFrames={INTRO_DURATION} />
       </Sequence>
-      {blocks.map(({ shot, from, shotNumber }) => (
-        <Sequence key={shot.id} from={from} durationInFrames={shot.durationInFrames}>
-          <ShotScene shot={shot} shotNumber={shotNumber} />
+      {blocks.map(({ shot, from, durationInFrames, shotNumber }) => (
+        <Sequence key={shot.id} from={from} durationInFrames={durationInFrames}>
+          <ShotScene shot={shot} shotNumber={shotNumber} durationInFrames={durationInFrames} />
         </Sequence>
       ))}
       <Sequence from={outroFrom} durationInFrames={OUTRO_DURATION}>

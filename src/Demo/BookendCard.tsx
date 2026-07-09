@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { colors, fontFamily, heroGradient } from "./theme";
 
 export const IntroCard: React.FC<{ durationInFrames: number }> = ({ durationInFrames }) => {
@@ -23,7 +23,6 @@ export const IntroCard: React.FC<{ durationInFrames: number }> = ({ durationInFr
         opacity,
       }}
     >
-      <Audio src={staticFile("audio/intro.wav")} />
       <div style={{ textAlign: "center", transform: `translateY(${y}px)`, maxWidth: 1200 }}>
         <div
           style={{
