@@ -1,14 +1,14 @@
 import React from "react";
-import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { colors, fontFamily, heroGradient } from "./theme";
 
 export const IntroCard: React.FC<{ durationInFrames: number }> = ({ durationInFrames }) => {
   const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [0, 12, durationInFrames - 12, durationInFrames], [0, 1, 1, 0], {
+  const opacity = interpolate(frame, [0, 10, durationInFrames - 8, durationInFrames], [0, 1, 1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const y = interpolate(frame, [0, 15], [24, 0], {
+  const y = interpolate(frame, [0, 12], [20, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -23,6 +23,7 @@ export const IntroCard: React.FC<{ durationInFrames: number }> = ({ durationInFr
         opacity,
       }}
     >
+      <Audio src={staticFile("audio/intro.wav")} />
       <div style={{ textAlign: "center", transform: `translateY(${y}px)`, maxWidth: 1200 }}>
         <div
           style={{

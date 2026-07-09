@@ -2,23 +2,30 @@ import React from "react";
 import { interpolate, useCurrentFrame, Easing } from "remotion";
 import type { CursorPoint } from "./shots";
 
-const MOVE_START = 6;
-const MOVE_END = 34;
-const CLICK_FRAME = 40;
+const MOVE_START = 4;
+const MOVE_END = 16;
+const CLICK_FRAME = 20;
 
-export const Cursor: React.FC<{ from: CursorPoint; to: CursorPoint }> = ({ from, to }) => {
+export const Cursor: React.FC<{
+  from: CursorPoint;
+  to: CursorPoint;
+  stage: { left: number; top: number; width: number; height: number };
+}> = ({ from, to, stage }) => {
   const frame = useCurrentFrame();
 
-  const x = interpolate(frame, [MOVE_START, MOVE_END], [from.x, to.x], {
+  const fx = interpolate(frame, [MOVE_START, MOVE_END], [from.x, to.x], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.bezier(0.22, 1, 0.36, 1),
+    easing: Easing.out(Easing.cubic),
   });
-  const y = interpolate(frame, [MOVE_START, MOVE_END], [from.y, to.y], {
+  const fy = interpolate(frame, [MOVE_START, MOVE_END], [from.y, to.y], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.bezier(0.22, 1, 0.36, 1),
+    easing: Easing.out(Easing.cubic),
   });
+
+  const x = stage.left + fx * stage.width;
+  const y = stage.top + fy * stage.height;
 
   const opacity = interpolate(frame, [0, MOVE_START], [0, 1], {
     extrapolateLeft: "clamp",
@@ -27,16 +34,16 @@ export const Cursor: React.FC<{ from: CursorPoint; to: CursorPoint }> = ({ from,
 
   const clickScale = interpolate(
     frame,
-    [CLICK_FRAME - 4, CLICK_FRAME, CLICK_FRAME + 10],
-    [1, 0.82, 1],
+    [CLICK_FRAME - 3, CLICK_FRAME, CLICK_FRAME + 7],
+    [1, 0.8, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  const rippleProgress = interpolate(frame, [CLICK_FRAME, CLICK_FRAME + 18], [0, 1], {
+  const rippleProgress = interpolate(frame, [CLICK_FRAME, CLICK_FRAME + 14], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const rippleOpacity = interpolate(frame, [CLICK_FRAME, CLICK_FRAME + 18], [0.55, 0], {
+  const rippleOpacity = interpolate(frame, [CLICK_FRAME, CLICK_FRAME + 14], [0.6, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -45,9 +52,8 @@ export const Cursor: React.FC<{ from: CursorPoint; to: CursorPoint }> = ({ from,
     <div
       style={{
         position: "absolute",
-        left: `${x}%`,
-        top: `${y}%`,
-        transform: "translate(-8%, -8%)",
+        left: x,
+        top: y,
         opacity,
         pointerEvents: "none",
       }}
@@ -57,21 +63,21 @@ export const Cursor: React.FC<{ from: CursorPoint; to: CursorPoint }> = ({ from,
           position: "absolute",
           left: 6,
           top: 6,
-          width: 34,
-          height: 34,
+          width: 30,
+          height: 30,
           borderRadius: "50%",
           border: "3px solid #fff",
-          transform: `translate(-50%, -50%) scale(${1 + rippleProgress * 1.6})`,
+          transform: `translate(-50%, -50%) scale(${1 + rippleProgress * 1.5})`,
           opacity: rippleOpacity,
         }}
       />
       <svg
-        width="30"
-        height="38"
+        width="28"
+        height="36"
         viewBox="0 0 30 38"
         style={{
           transform: `scale(${clickScale})`,
-          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.45))",
+          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))",
         }}
       >
         <path
